@@ -70,7 +70,7 @@ export default function DetailPage() {
                 </Link>
             </div>
             <img
-                src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg"
+                src={detailProdi.images}
                 alt="Dekanat Undip"
                 className="rounded-b-3xl max-h-[400px] w-full object-cover"
             />
@@ -82,7 +82,7 @@ export default function DetailPage() {
                 <div className="flex space-x-4 overflow-x-auto custom-scrollbar">
                     {/* List of hardcoded images */}
                     <img 
-                        src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg" 
+                        src={detailProdi.images}
                         alt="Dekanat Undip 1" 
                         className="rounded-xl max-w-[150px] h-[100px] object-cover cursor-pointer"
                         onClick={() => handleImageClick('https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg')}
@@ -94,7 +94,7 @@ export default function DetailPage() {
                         onClick={() => handleImageClick('https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg')}
                     />
                     <img 
-                        src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg" 
+                        src={detailProdi.images} 
                         alt="Dekanat Undip 3" 
                         className="rounded-xl max-w-[150px] h-[100px] object-cover cursor-pointer"
                         onClick={() => handleImageClick('https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg')}
