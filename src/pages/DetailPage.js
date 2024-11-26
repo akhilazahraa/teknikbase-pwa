@@ -1,6 +1,7 @@
 import { ChevronLeft, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import BottomNavigation from '../components/nav/NavBottom';
 
 export default function DetailPage() {
     const { id } = useParams();
@@ -20,9 +21,7 @@ export default function DetailPage() {
         fetchDetailProdi();
     }, [id]);
 
-    const handleImageClick = (src) => {
-        setSelectedImage(src);
-    };
+
 
     const handleClosePopup = () => {
         setSelectedImage(null);
@@ -55,7 +54,9 @@ export default function DetailPage() {
     }
 
     return (
-        <div className="relative">
+        <>
+                <BottomNavigation/>
+                <div className="relative">
             {selectedImage && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
                     <div className="relative">
@@ -65,7 +66,7 @@ export default function DetailPage() {
                 </div>
             )}
             <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded-full">
-                <Link to="/" className="flex items-center text-black">
+                <Link to="/jurusan" className="flex items-center text-black">
                     <ChevronLeft />
                 </Link>
             </div>
@@ -79,35 +80,10 @@ export default function DetailPage() {
                     <h1 className="font-bold text-xl">{detailProdi.nama_prodi}</h1>
                     <p className="text-[#737373] text-sm">Akreditasi {detailProdi.akreditasi}</p>
                 </div>
-                <div className="flex space-x-4 overflow-x-auto custom-scrollbar">
-                    {/* List of hardcoded images */}
-                    <img 
-                        src={detailProdi.images}
-                        alt="Dekanat Undip 1" 
-                        className="rounded-xl max-w-[150px] h-[100px] object-cover cursor-pointer"
-                        onClick={() => handleImageClick('https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg')}
-                    />
-                    <img 
-                        src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg" 
-                        alt="Dekanat Undip 2" 
-                        className="rounded-xl max-w-[150px] h-[100px] object-cover cursor-pointer"
-                        onClick={() => handleImageClick('https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg')}
-                    />
-                    <img 
-                        src={detailProdi.images} 
-                        alt="Dekanat Undip 3" 
-                        className="rounded-xl max-w-[150px] h-[100px] object-cover cursor-pointer"
-                        onClick={() => handleImageClick('https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg')}
-                    />
-                    <img 
-                        src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg" 
-                        alt="Dekanat Undip 4" 
-                        className="rounded-xl max-w-[150px] h-[100px] object-cover cursor-pointer"
-                        onClick={() => handleImageClick('https://upload.wikimedia.org/wikipedia/commons/2/2d/Dekanat_ft_undip.jpg')}
-                    />
-                </div>
+                
                 <p className="text-sm text-[#737373] text-justify">{detailProdi.description}</p>
             </div>
-        </div>
+        </div></>
+       
     );
 }

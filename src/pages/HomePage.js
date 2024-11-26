@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import BottomNavigation from "../components/nav/NavBottom";
 
 export default function HomePage() {
     return (
+        <> 
+            <BottomNavigation/>
         <div className="bg-white min-h-screen p-5">
             <div className="mb-6">
                 <h1 className="text-2xl text-black text-left">Welcome,</h1>
@@ -38,6 +41,7 @@ export default function HomePage() {
                     <span className="text-2xl">&rarr;</span>
                 </Link>
             </div>
-        </div>
+        </div> </>                
+            
     );
 }

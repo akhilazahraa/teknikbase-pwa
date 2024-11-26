@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
+import BottomNavigation from '../components/nav/NavBottom';
 
 export default function DetailHimpunanPage() {
     const { id } = useParams();
@@ -37,6 +38,8 @@ export default function DetailHimpunanPage() {
     }
 
     return (
+        <>
+        <BottomNavigation/>
         <div className="relative">
             {/* Back Button */}
             <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded-full shadow-md">
@@ -76,6 +79,8 @@ export default function DetailHimpunanPage() {
                 {/* Description */}
                 <p className="text-sm text-[#737373] text-justify">{himpunanDetail.deskripsi_himpunan}</p>
             </div>
-        </div>
+        </div></>
+        
     );
+
 }

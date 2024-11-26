@@ -5,7 +5,6 @@ import HomePage from './pages/HomePage';
 import DetailPage from './pages/DetailPage';
 import HimpunanPage from './pages/HimpunanPage';
 import DetailHimpunanPage from './pages/DetailHimpunanPage';
-import BottomNavigation from './components/nav/NavBottom';
 import JurusanPage from './pages/JurusanPage';
 import SplashPage from './pages/SplashPage';
 import ProfilePage from './pages/ProfilePage';
@@ -14,7 +13,6 @@ function App() {
   return (
     <div className="App mx-auto overflow-hidden overflow-y-auto mb-[55px] max-w-[430px]">
       <Router>
-        <BottomNavigation/>
         <Routes>
           <Route path='/' element={<SplashPage/>}/>
           <Route path='/home' element={<HomePage/>}/>
