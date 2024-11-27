@@ -5,33 +5,40 @@ import BottomNavigation from '../components/nav/NavBottom';
 
 export default function HimpunanPage() {
     const [himpunan, setHimpunan] = useState([]);
-    const [searchQuery, setSearchQuery] = useState(''); // State untuk menyimpan query pencarian
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchHimpunan = async () => {
             try {
-                const response = await fetch('https://api-engineerbase.vercel.app/api/himpunan');
-                const data = await response.json();
-                setHimpunan(data);
+                // Cek apakah data ada di cache terlebih dahulu
+                const cachedData = await caches.match('https://api-engineerbase.vercel.app/api/himpunan');
+                if (cachedData) {
+                    const cachedResponse = await cachedData.json();
+                    setHimpunan(cachedResponse);
+                } else {
+                    // Jika data tidak ada di cache, ambil dari API
+                    const response = await fetch('https://api-engineerbase.vercel.app/api/himpunan');
+                    const data = await response.json();
+                    setHimpunan(data);
+
+                    // Simpan data yang diambil dari API ke cache untuk penggunaan selanjutnya
+                    const cache = await caches.open('data-cache-v1');
+                    cache.put('https://api-engineerbase.vercel.app/api/himpunan', new Response(JSON.stringify(data)));
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
+
         fetchHimpunan();
-    }, []);
+    }, []); // useEffect dijalankan sekali ketika komponen pertama kali dimuat
 
     const handleClick = (id) => {
         navigate(`/himpunan/${id}`);
     };
 
-    // Menyaring himpunan berdasarkan pencarian
-    const filteredHimpunan = himpunan.filter((item) =>
-        item.nama_himpunan.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
     return (
-        <>                 
+        <>                  
             <BottomNavigation />
             <div className="mt-7 px-5">
                 <div className="space-y-4">
@@ -46,21 +53,10 @@ export default function HimpunanPage() {
                     </div>
                 </div>
 
-                {/* Input pencarian */}
-                <div className="mt-5">
-                    <input
-                        type="text"
-                        placeholder="Cari nama himpunan..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full p-3 border rounded-lg shadow-sm"
-                    />
-                </div>
-
-                {/* Daftar Himpunan yang sudah difilter */}
+                {/* Daftar Himpunan */}
                 <div className="mt-5 space-y-4">
-                    {filteredHimpunan.length > 0 ? (
-                        filteredHimpunan.map((item) => (
+                    {himpunan.length > 0 ? (
+                        himpunan.map((item) => (
                             <div 
                                 key={item.id} 
                                 className="p-4 border rounded-lg shadow-sm text-left flex justify-between gap-4 items-center cursor-pointer"
@@ -84,7 +80,7 @@ export default function HimpunanPage() {
                             </div>
                         ))
                     ) : (
-                        <p className="text-center text-gray-500">Tidak ada himpunan yang sesuai dengan pencarian Anda.</p>
+                        <p className="text-center text-gray-500">Tidak ada himpunan yang tersedia.</p>
                     )}
                 </div>
             </div>

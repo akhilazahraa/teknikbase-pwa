@@ -10,16 +10,28 @@ export default function DetailHimpunanPage() {
     useEffect(() => {
         const fetchHimpunanDetail = async () => {
             try {
-                const response = await fetch(`https://api-engineerbase.vercel.app/api/himpunan/${id}`);
-                const data = await response.json();
-                setHimpunanDetail(data);
+                // Cek apakah data sudah ada di cache
+                const cachedData = await caches.match(`https://api-engineerbase.vercel.app/api/himpunan/${id}`);
+                if (cachedData) {
+                    const cachedResponse = await cachedData.json();
+                    setHimpunanDetail(cachedResponse);
+                } else {
+                    // Ambil data dari API jika tidak ada di cache
+                    const response = await fetch(`https://api-engineerbase.vercel.app/api/himpunan/${id}`);
+                    const data = await response.json();
+                    setHimpunanDetail(data);
+
+                    // Simpan data yang diambil ke cache
+                    const cache = await caches.open('data-cache-v1');
+                    cache.put(`https://api-engineerbase.vercel.app/api/himpunan/${id}`, new Response(JSON.stringify(data)));
+                }
             } catch (error) {
                 console.error('Error fetching himpunan details:', error);
             }
         };
 
         fetchHimpunanDetail();
-    }, [id]);
+    }, [id]); // useEffect dijalankan setiap kali id berubah
 
     if (!himpunanDetail) {
         return (
@@ -39,48 +51,46 @@ export default function DetailHimpunanPage() {
 
     return (
         <>
-        <BottomNavigation/>
-        <div className="relative">
-            {/* Back Button */}
-            <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded-full shadow-md">
-                <Link to="/himpunan" className="flex items-center text-black">
-                    <ChevronLeft className="mr-2" />
-                </Link>
-            </div>
-
-            {/* Header Image */}
-            <img
-                src={`https://api-engineerbase.vercel.app${himpunanDetail.logo_himpunan}`}
-                alt={himpunanDetail.nama_himpunan}
-                className="rounded-b-3xl max-h-[400px] w-full object-cover"
-                referrerPolicy="no-referrer"
-            />
-
-            {/* Content */}
-            <div className="text-left px-5 mt-4 space-y-6">
-                {/* Title and Accreditation */}
-                <div>
-                    <h1 className="font-bold text-xl">{himpunanDetail.nama_himpunan}</h1>
-
+            <BottomNavigation />
+            <div className="relative">
+                {/* Back Button */}
+                <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded-full shadow-md">
+                    <Link to="/himpunan" className="flex items-center text-black">
+                        <ChevronLeft className="mr-2" />
+                    </Link>
                 </div>
 
-                {/* Image Gallery */}
-                <div className="flex space-x-4 overflow-x-auto custom-scrollbar">
-                    {himpunanDetail.gallery?.map((image, index) => (
-                        <img
-                            key={index}
-                            src={image}
-                            alt={`Gallery ${index}`}
-                            className="rounded-xl max-w-[150px] h-[100px] object-cover"
-                        />
-                    ))}
-                </div>
+                {/* Header Image */}
+                <img
+                    src={`https://api-engineerbase.vercel.app${himpunanDetail.logo_himpunan}`}
+                    alt={himpunanDetail.nama_himpunan}
+                    className="rounded-b-3xl max-h-[400px] w-full object-cover"
+                    referrerPolicy="no-referrer"
+                />
 
-                {/* Description */}
-                <p className="text-sm text-[#737373] text-justify">{himpunanDetail.deskripsi_himpunan}</p>
+                {/* Content */}
+                <div className="text-left px-5 mt-4 space-y-6">
+                    {/* Title and Accreditation */}
+                    <div>
+                        <h1 className="font-bold text-xl">{himpunanDetail.nama_himpunan}</h1>
+                    </div>
+
+                    {/* Image Gallery */}
+                    <div className="flex space-x-4 overflow-x-auto custom-scrollbar">
+                        {himpunanDetail.gallery?.map((image, index) => (
+                            <img
+                                key={index}
+                                src={image}
+                                alt={`Gallery ${index}`}
+                                className="rounded-xl max-w-[150px] h-[100px] object-cover"
+                            />
+                        ))}
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-sm text-[#737373] text-justify">{himpunanDetail.deskripsi_himpunan}</p>
+                </div>
             </div>
-        </div></>
-        
+        </>
     );
-
 }

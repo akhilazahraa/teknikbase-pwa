@@ -5,7 +5,6 @@ import BottomNavigation from '../components/nav/NavBottom';
 
 export default function JurusanPage() {
     const [programStudi, setProgramStudi] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,10 +34,6 @@ export default function JurusanPage() {
         navigate(`/jurusan/${id}`);
     };
 
-    const filteredProgramStudi = programStudi.filter((prodi) =>
-        prodi.nama_prodi.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
     return (
         <>
             <BottomNavigation />
@@ -54,21 +49,11 @@ export default function JurusanPage() {
                         <p className="text-[#737373]">Mau cari program studi unggulan kamu?</p>
                     </div>
                 </div>
-                
-                {/* Search Bar */}
-                <div className="mt-5">
-                    <input
-                        type="text"
-                        placeholder="Cari jurusan..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full p-3 border rounded-lg shadow-sm"
-                    />
-                </div>
 
+                {/* Daftar Program Studi */}
                 <div className="mt-5 space-y-4">
-                    {filteredProgramStudi.length > 0 ? (
-                        filteredProgramStudi.map((prodi) => (
+                    {programStudi.length > 0 ? (
+                        programStudi.map((prodi) => (
                             <div 
                                 key={prodi.id} 
                                 className="p-4 border rounded-lg shadow-sm text-left flex justify-between gap-4 items-center cursor-pointer"
@@ -91,7 +76,7 @@ export default function JurusanPage() {
                             </div>
                         ))
                     ) : (
-                        <p className="text-center text-gray-500">Tidak ada jurusan yang sesuai dengan pencarian Anda.</p>
+                        <p className="text-center text-gray-500">Tidak ada jurusan yang tersedia.</p>
                     )}
                 </div>
             </div>
